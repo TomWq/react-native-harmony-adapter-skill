@@ -14,6 +14,7 @@ Read [references/compat-import-map.md](references/compat-import-map.md) when rep
 Read [references/expo-projects.md](references/expo-projects.md) when the app uses Expo, Expo Router, local Expo modules under `modules/`, or a mixed Expo-plus-bare workflow.
 Read [references/expo-router-on-harmony.md](references/expo-router-on-harmony.md) when debugging Expo Router startup, layout, linking, or navigation-container issues on Harmony.
 Read [references/navigation-dependency-set-on-harmony.md](references/navigation-dependency-set-on-harmony.md) when stack, tabs, linking, or `@react-navigation/*` exports become undefined after package swaps.
+Read [references/media-paths-on-harmony.md](references/media-paths-on-harmony.md) when debugging image-picker preview failures, upload failures, `file://` vs real path issues, `media/Photo/...` paths, or compressor/RNFetchBlob path handling on Harmony.
 Read [references/vision-camera-on-harmony.md](references/vision-camera-on-harmony.md) when debugging camera preview, `takePhoto()` returning `null`, `photoSession null`, `7400101` or `7400201` errors, camera-roll saves, or Harmony-specific VisionCamera patches.
 Read [references/custom-expo-modules-on-harmony.md](references/custom-expo-modules-on-harmony.md) when adapting business Expo modules under `modules/` or replacing them with Harmony services.
 Read [references/custom-turbomodules-on-harmony.md](references/custom-turbomodules-on-harmony.md) when building or debugging a project-owned TurboModule with JS, ArkTS, and C++ registration on Harmony.
@@ -193,6 +194,13 @@ Always fix blockers in this order:
 - On Harmony, this is often a session-init race, not a JS call-site bug.
 - Start by checking whether preview is visible, whether `photoSession null` appears, and whether the current surface was re-created after first init.
 - Prefer the official permission helpers from VisionCamera on Harmony before adding custom permission logic.
+
+### Image uploads work on one flow but fail on another
+
+- Read [references/media-paths-on-harmony.md](references/media-paths-on-harmony.md) before rewriting page logic.
+- On Harmony, image-picker often gives you a preview path and an upload path that are not the same thing.
+- A common smell is: camera flow works, gallery flow fails, or upload succeeds but the selected image does not render after returning to the page.
+- Normalize preview URIs separately from upload file paths.
 
 ### VisionCamera logs `7400101` or `7400201`
 

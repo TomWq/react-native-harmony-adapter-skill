@@ -33,6 +33,7 @@ These usually keep the same JS API shape with Harmony-specific native integratio
 
 Notes:
 
+- `react-native-image-picker` on Harmony can expose different path fields for preview and upload. Normalize them explicitly instead of treating `uri`, `path`, and `originalPath` as interchangeable.
 - `react-native-vision-camera` often still needs manual host verification, and Harmony-specific fixes may live in the ArkTS source package rather than pure JS.
 - `@react-native-camera-roll/camera-roll` can still fail with a missing TurboModule if the Harmony host project is not fully wired.
 
