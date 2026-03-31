@@ -1,0 +1,4 @@
+interface:
+  display_name: "Adapt RN to Harmony"
+  short_description: "Audit dependencies, wire the Harmony host project, and stabilize startup for existing React Native apps"
+  default_prompt: "Use $react-native-harmony-adapter to adapt this existing React Native project to HarmonyOS."
