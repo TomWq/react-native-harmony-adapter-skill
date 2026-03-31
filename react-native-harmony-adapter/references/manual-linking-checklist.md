@@ -31,6 +31,7 @@ Check all of these before changing JS:
 - The Harmony package is declared.
 - The local `file:` path points to the correct HAR or source package.
 - The package name matches the docs exactly.
+- If you are patching a package's ArkTS sources, confirm the path points at the source package directory, not only a prebuilt HAR.
 
 ### `build-profile.json5`
 
@@ -46,12 +47,14 @@ Check all of these before changing JS:
 
 - The ArkTS package class is imported from the right package entry.
 - The package instance is included in the exported package list.
+- For camera and camera-roll flows, verify the correct package class names from the installed package contents, not only from memory or older docs.
 
 ### `PackageProvider.cpp`
 
 - The C++ package header is included if the library needs native registration.
 - The package is added to the returned package vector.
 - If the project delegates registration into helper files such as `appendServicePackages(...)`, inspect those helper files too. A clean root `PackageProvider.cpp` does not prove the package is actually wired.
+- TurboModules such as camera-roll may still be missing even when JS and ArkTS imports compile. Confirm the native package is actually appended in C++.
 
 ### `CMakeLists.txt`
 
@@ -63,6 +66,7 @@ Check all of these before changing JS:
 - ArkTS view components are registered for native view packages.
 - Fonts are registered for icon libraries.
 - Debug bundle provider uses the host machine IP, not just `localhost`.
+- If a camera package provides view builders or XComponent-backed views, verify the current installed package's registration pattern before assuming the view is ready.
 
 ## Package-name mismatch reminder
 
@@ -76,9 +80,11 @@ Check all of these before changing JS:
 2. Clear stale Harmony build artifacts if the old package is still being loaded.
 3. Rebuild and reinstall the Harmony app.
 4. If the package still fails only from JS, scan the codebase for direct imports of the old community package path and replace them with the compat wrapper.
+5. If you edited a source-style package under `node_modules`, verify the generated `harmony/entry/oh_modules/...` copy is refreshed or rebuild from a clean state.
 
 Typical stale directories:
 
 - `harmony/.hvigor`
 - `harmony/entry/build`
 - `harmony/entry/.cxx`
+- `harmony/entry/oh_modules`

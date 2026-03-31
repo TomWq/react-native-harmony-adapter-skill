@@ -31,6 +31,11 @@ These usually keep the same JS API shape with Harmony-specific native integratio
 - `@react-native-camera-roll/camera-roll` -> `@react-native-ohos/camera-roll`
 - `react-native-restart-newarch` -> `@react-native-ohos/react-native-restart`
 
+Notes:
+
+- `react-native-vision-camera` often still needs manual host verification, and Harmony-specific fixes may live in the ArkTS source package rather than pure JS.
+- `@react-native-camera-roll/camera-roll` can still fail with a missing TurboModule if the Harmony host project is not fully wired.
+
 ## Replacements commonly needed
 
 - `jpush-react-native` -> `@react-native-ohos/jpush-react-native`
@@ -74,6 +79,11 @@ Recommended pattern:
 - vendor private business SDKs
 - face detector add-ons
 - hot update if the published Harmony package shape does not match current docs
+
+Practical examples:
+
+- `react-native-vision-camera-face-detector` -> disable on Harmony first, then revisit after the base camera flow is stable
+- camera props or helpers that are iOS or Android specific -> gate behind `Platform.OS !== 'harmony'`
 
 For these, prefer:
 

@@ -4,6 +4,8 @@
 
 这套 Skill 不是凭空编写的说明文档，而是从一个真实的复杂业务项目迁移过程中沉淀出来的。它重点覆盖了 React Native + Expo Router 项目在鸿蒙适配中的高频问题，包括依赖盘点、Harmony 宿主工程接线、兼容层封装、Expo Router 稳定化、图标字体处理、自定义 TurboModule 桥接、启动白屏排查等。
 
+当前版本还额外补充了相机专项适配经验，覆盖 `react-native-vision-camera` / `@react-native-ohos/react-native-vision-camera` 在 Harmony 下的预览初始化、`takePhoto()` 返回 `null`、`photoSession null`、`7400101`、`7400201`、CameraRoll 保存失败，以及 Bun 项目里如何持久化 ETS 补丁等问题。
+
 ## 这个 Skill 解决什么问题
 
 在真实项目中，鸿蒙适配通常不是单个页面的问题，而是多层问题叠加：
@@ -63,6 +65,7 @@ react-native-harmony-adapter/
 
 - Expo 项目在 Harmony 上的适配策略
 - Expo Router 在 Harmony 上的导航与启动问题
+- VisionCamera 在 Harmony 上的接线与排障
 - 自定义 Expo 模块适配方法
 - 自定义 TurboModule on Harmony
 - 导航依赖集合治理

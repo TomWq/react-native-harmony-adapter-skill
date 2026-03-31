@@ -14,6 +14,7 @@ Read [references/compat-import-map.md](references/compat-import-map.md) when rep
 Read [references/expo-projects.md](references/expo-projects.md) when the app uses Expo, Expo Router, local Expo modules under `modules/`, or a mixed Expo-plus-bare workflow.
 Read [references/expo-router-on-harmony.md](references/expo-router-on-harmony.md) when debugging Expo Router startup, layout, linking, or navigation-container issues on Harmony.
 Read [references/navigation-dependency-set-on-harmony.md](references/navigation-dependency-set-on-harmony.md) when stack, tabs, linking, or `@react-navigation/*` exports become undefined after package swaps.
+Read [references/vision-camera-on-harmony.md](references/vision-camera-on-harmony.md) when debugging camera preview, `takePhoto()` returning `null`, `photoSession null`, `7400101` or `7400201` errors, camera-roll saves, or Harmony-specific VisionCamera patches.
 Read [references/custom-expo-modules-on-harmony.md](references/custom-expo-modules-on-harmony.md) when adapting business Expo modules under `modules/` or replacing them with Harmony services.
 Read [references/custom-turbomodules-on-harmony.md](references/custom-turbomodules-on-harmony.md) when building or debugging a project-owned TurboModule with JS, ArkTS, and C++ registration on Harmony.
 Read [references/vector-icons-and-fonts-on-harmony.md](references/vector-icons-and-fonts-on-harmony.md) when `@expo/vector-icons`, `expo-font`, icon white boxes, or missing glyphs appear on Harmony.
@@ -185,6 +186,25 @@ Always fix blockers in this order:
 - If `patch-package` says a patch file cannot be parsed, inspect the patch first instead of reinstalling blindly.
 - In Bun-only projects, `npx patch-package` may refuse to regenerate patches because there is no `package-lock.json` or `yarn.lock`.
 - In that case regenerate the patch by diffing the installed package against an `npm pack` tarball or another clean source snapshot, then replace the broken patch file.
+
+### VisionCamera preview opens but `takePhoto()` returns `null`
+
+- Read [references/vision-camera-on-harmony.md](references/vision-camera-on-harmony.md) before changing page code blindly.
+- On Harmony, this is often a session-init race, not a JS call-site bug.
+- Start by checking whether preview is visible, whether `photoSession null` appears, and whether the current surface was re-created after first init.
+- Prefer the official permission helpers from VisionCamera on Harmony before adding custom permission logic.
+
+### VisionCamera logs `7400101` or `7400201`
+
+- `7400101` usually points to a bad preview/session argument combination such as ratio or profile mismatch.
+- `7400201` can be a secondary camera-service failure after a duplicate init; if preview is already live and capture succeeds, treat it as a duplicate-init clue first.
+- Fix the native/session lifecycle before rewriting the camera page UI.
+
+### Camera preview is too small or letterboxed
+
+- Do not assume this is only page-level styling.
+- On Harmony, inspect the native preview ratio, preview profile selection, and resize-mode behavior in the VisionCamera host package.
+- If you patch the package under `node_modules`, persist it with `patch-package` or the next install may wipe the fix.
 
 ### Metro debug mode cannot connect
 
